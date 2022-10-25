@@ -49,6 +49,7 @@
                                             <field name="start_date"/>
                                             <field name="duration"/>
                                             <field name="seats"/>
+                                            <field name="state"/>
                                         </tree>
                                         <form string="Sesi">
                                             <group>
