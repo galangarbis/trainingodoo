@@ -19,4 +19,10 @@ class TrainingWizard(models.TransientModel):
     def tambah_banyak_peserta(self):
         for sesi in self.session_ids:
             sesi.attendee_ids |= self.attendee_ids
+
+    def cron_expire_session(self):
+        now = fields.Date.today()
+        expired_ids = self.env['trainingodoo.session'].search([('end_date', '<', now), ('state', '=', 'open')])
+        expired_ids.write({'state': 'done'})
+
     

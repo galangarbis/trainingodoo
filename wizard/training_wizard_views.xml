@@ -62,5 +62,34 @@
 
         <!-- wizard  -->
         <menuitem id="menu_item_trainingodoo_wizard" name="Add Attendees" parent="menu_bar_training_odoo" action="trainingodoo_wizard_menu_list_action"/>
+
+        <!-- Membuat View Form Wizard Cron -->
+        <record id="trainingodoo_wizard_view_form_cron" model="ir.ui.view">
+            <field name="name">trainingodoo.wizard.form.cron</field>
+            <field name="model">trainingodoo.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Wizard Form">
+                    <p>Apakah anda yakin akan menjalankan schedule cron ?</p>
+                    <footer>
+                        <button name="cron_expire_session" type="object" string="Eksekusi" class="oe_highlight"/>
+                        or
+                        <button string="Batal" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- Membuat Action/Event Wizard Cron -->
+ 
+        <record id="trainingodoo_wizard_cron_action" model="ir.actions.act_window">
+            <field name="name">Run Scheduler Session</field>
+            <field name="res_model">trainingodoo.wizard</field>
+            <field name="view_id" ref="trainingodoo_wizard_view_form_cron"/>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem id="menu_item_trainingodoo_wizard_cron" name="Run Scheduler" parent="menu_bar_training_odoo" action="trainingodoo_wizard_cron_action"/>
+ 
     </data>
 </odoo>
