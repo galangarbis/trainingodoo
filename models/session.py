@@ -38,21 +38,23 @@ class TrainingSession(models.Model):
             end_date = fields.Datetime.from_string(sesi.end_date)
             sesi.duration = (end_date - start_date).days + 1
     
-    course_id = fields.Many2one('trainingodoo.course', string='Judul Kursus', required=True, ondelete='cascade')
-    name = fields.Char(string='Nama', required=True, )
-    start_date = fields.Date(string='Tanggal',default=fields.Date.context_today)
-    duration = fields.Float(string='Durasi',help='Jumlah Hari Training',default = 3)
-    seats = fields.Integer(string='Kursi', help='Jumlah Kuota Kursi',default = 10)
-    partner_id = fields.Many2one('res.partner', string='Instruktur', domain=['|',('instructor','=','True'),('category_id.name','ilike','Pengajar')], default=default_partner_id)
+    course_id = fields.Many2one('trainingodoo.course', string='Judul Kursus', required=True, ondelete='cascade', readonly=True, states={'draft': [('readonly', False)]})
+    name = fields.Char(string='Nama', required=True, readonly=True, states={'draft': [('readonly', False)]})
+    start_date = fields.Date(string='Tanggal',default=fields.Date.context_today, readonly=True, states={'draft': [('readonly', False)]})
+    duration = fields.Float(string='Durasi',help='Jumlah Hari Training',default = 3, readonly=True, states={'draft': [('readonly', False)]})
+    seats = fields.Integer(string='Kursi', help='Jumlah Kuota Kursi',default = 10, readonly=True, states={'draft': [('readonly', False)]})
+    partner_id = fields.Many2one('res.partner', string='Instruktur', domain=['|',('instructor','=','True'),('category_id.name','ilike','Pengajar')], default=default_partner_id, readonly=True, states={'draft': [('readonly', False)]})
     attendee_ids = fields.Many2many( 
         comodel_name='trainingodoo.attendee', 
         relation='session_attendee_rel',
         column1='session_id',
         column2='attendee_id',
-        string='Peserta'
+        string='Peserta', 
+        readonly=True, 
+        states={'draft': [('readonly', False)]}
     )
     taken_seats = fields.Float(string="Kursi Terisi", compute="compute_taken_seats")
-    end_date = fields.Date(String="Tanggal Selesai",compute="get_end_date",inverse="set_end_date",store=True)
+    end_date = fields.Date(String="Tanggal Selesai",compute="get_end_date",inverse="set_end_date",store=True, readonly=True, states={'draft': [('readonly', False)]})
     attendees_count = fields.Integer(string="Jumlah Peserta",compute="get_attendees_count",store=True)
     color = fields.Integer(string='Color Index',default=0)
     level = fields.Selection(string='Tingkatan', related='course_id.level')
@@ -84,3 +86,8 @@ class TrainingSession(models.Model):
         if self.duration <= 0:
             self.duration = 1
             return {'warning' : {'title' : 'Perhatian', 'message' : 'Durasi Hari Training Tidak Boleh 0 atau Negatif'}}
+        
+    def cron_expire_session(self):
+        now = fields.Date.today()
+        expired_ids = self.search([('end_date', '<', now), ('state', '=', 'open')])
+        expired_ids.write({'state': 'done'})
