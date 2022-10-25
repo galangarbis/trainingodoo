@@ -1,0 +1,19 @@
+<odoo>
+  <data>
+    <!-- Membuat Menu Dashboard -->
+    
+    <menuitem id="menu_dashboard_training_odoo" name="Training Odoo" web_icon="trainingodoo,static/description/training_icon.png"/>
+    
+    <!-- Membuat Menu Bar Training -->
+    
+    <menuitem id="menu_bar_training_odoo" name="Training" parent="menu_dashboard_training_odoo"/>
+
+    <!-- Membuat Menu Bar Configuration -->
+    
+    <menuitem id="menu_bar_configuration" name="Configuration" parent="menu_dashboard_training_odoo"/>
+
+    <!-- kategori pengajar  -->
+    <menuitem id="menu_item_instructor_tags" name="Instructor Tags" parent="menu_bar_configuration" action="base.action_partner_category_form"/>
+
+  </data>
+</odoo>

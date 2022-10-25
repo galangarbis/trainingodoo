@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- List View -->
+        <record model="ir.ui.view" id="trainingodoo_course_tree">
+            <field name="name">trainingodoo.course.tree</field>
+            <field name="model">trainingodoo.course</field>
+            <field name="arch" type="xml">
+                <tree string="Course List">
+                    <field name="ref"/>
+                    <field name="name"/>
+                    <field name="user_id"/>
+                    <field name="level"/>
+                    <field name="description"/>
+                </tree>
+            </field>
+        </record>
+        
+        <!-- Form View -->
+        <record model="ir.ui.view" id="trainingodoo_course_form">
+            <field name="name">trainingodoo.course.form</field>
+            <field name="model">trainingodoo.course</field>
+            <field name="arch" type="xml">
+                <form string="Course Form">
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="ref"/>
+                            </h1>
+                        </div>
+                        <group col="4" string="Informasi">
+                            <field name="name"/>
+                            <field name="color"/>
+                            <field name="level" widget="radio"/>
+                        </group>
+                        <group>
+                            <separator string="Koordinator"/>
+                            <field name="user_id"/>
+                            <separator string="Login"/>
+                            <field name="email"/>
+                        </group>
+                        <notebook>
+                            <page string="Sesi">
+                                <group>
+                                    <field name="session_ids" mode="tree,kanban" nolabel="1">
+                                        <tree string="Sesi" editable="top">
+                                            <field name="name"/>
+                                            <field name="partner_id"/>
+                                            <field name="start_date"/>
+                                            <field name="duration"/>
+                                            <field name="seats"/>
+                                        </tree>
+                                        <form string="Sesi">
+                                            <group>
+                                                <field name="name"/>
+                                                <field name="partner_id"/>
+                                                <field name="start_date"/>
+                                                <field name="duration"/>
+                                                <field name="seats"/>
+                                            </group>
+                                        </form>
+                                    </field>
+                                </group>
+                            </page>
+                            <page string="Cendera Mata">
+                                <group>
+                                    <field name="product_ids" nolabel="1"/>                                    
+                                </group>
+                            </page>
+                            <page string="Keterangan">
+                                <group>
+                                    <field name="description"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        
+        <!-- Search View -->
+        <record model="ir.ui.view" id="trainingodoo_course_view_search">
+            <field name="name">trainingodoo.course.search</field>
+            <field name="model">trainingodoo.course</field>
+            <field name="arch" type="xml">
+                <search string="Search Course">
+                    <field name="name" string="Kursus" filter_domain="['|',('name','ilike','self'),('description','ilike','self')]"/>
+                    <field name="user_id"/>
+                    <filter name="my_course" string="Kursus Saya" domain="[('user_id','=', uid)]"/>
+                    <group string="Group By">
+                        <filter name="responsible" string="Penanggung Jawab" context="{'group_by':'user_id'}"/>
+                    </group>
+                    <searchpanel>
+                        <field name="level" icon="fa-signal" enable_counters="1"/>
+                    </searchpanel>
+                </search>
+            </field>
+        </record>
+
+        <record id="trainingodoo_course_view_activity" model="ir.ui.view">
+            <field name="name">trainingodoo.course.view.activity</field>
+            <field name="model">trainingodoo.course</field>
+            <field name="arch" type="xml">
+                <activity string="Course">
+                    <field name="id"/>
+                    <templates>
+                        <div t-name="activity-box">
+                            <div>
+                                <field name="name" display="full"/>
+                                <field name="user_id" muted="1" display="full"/>
+                            </div>
+                        </div>
+                    </templates>
+                </activity>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="trainingodoo_course_action">
+            <field name="name">Course</field>
+            <field name="res_model">trainingodoo.course</field>
+            <field name="view_mode">tree,form,activity</field>
+            <field name="help" type="html">
+                <p name="o_view_nocontent_smiling_face">
+                    Buatlah kursus pertamamu ...
+                </p>
+            </field>
+        </record>
+
+        <!-- Membuat Menu Item Course --> 
+        <menuitem id="menu_item_training_course" name="Course" parent="menu_bar_training_odoo" action="trainingodoo_course_action"/>
+    </data>
+</odoo>

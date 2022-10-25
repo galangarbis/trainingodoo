@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Form View -->
+        <record model="ir.ui.view" id="trainingodoo_partner_form">
+            <field name="name">instruktur.res.partner.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <notebook position="inside">
+                    <page string="Session">
+                        <group>
+                            <!-- <field name="instructor"/> -->
+                            <field name="session_ids" attrs="{'invisible': [('instructor', '=', False)]}"/>
+                        </group>
+                    </page>
+                </notebook>
+                <xpath expr="//field[@name='vat']" position="after">
+                    <field name="instructor"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="trainingodoo_partner_action" model="ir.actions.act_window">
+            <field name="name">Instructor</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="domain">['|',('instructor','=',True),('category_id.name','ilike','Pengajar')]</field>
+            <field name="context">{'default_instructor' : True}</field>
+        </record>
+        
+        <menuitem id="menu_item_training_instructor" name="Instructor" parent="menu_bar_configuration" action="trainingodoo_partner_action"/>
+    </data>
+</odoo>

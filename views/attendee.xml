@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- List View -->
+        <record model="ir.ui.view" id="trainingodoo_attendee_tree">
+            <field name="name">trainingodoo.attendee.tree</field>
+            <field name="model">trainingodoo.attendee</field>
+            <field name="arch" type="xml">
+                <tree string="Attendee List">
+                    <field name="name"/>
+                    <field name="email"/>
+                    <field name="sex"/>
+                </tree>
+            </field>
+        </record>
+        
+        <!-- Form View -->
+        <record model="ir.ui.view" id="trainingodoo_attendee_form">
+            <field name="name">trainingodoo.attendee.form</field>
+            <field name="model">trainingodoo.attendee</field>
+            <field name="arch" type="xml">
+                <form string="Attendee Form">
+                    <sheet>
+                        <group col="4">
+                            <field name="name"/>
+                            <field name="email"/>
+                            <field name="sex" widget="radio"/>
+                            <field name="marital"/>
+                        </group>
+                        <group string="Sesi">
+                            <field name="session_ids" nolabel="1"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="trainingodoo_attendee_action">
+            <field name="name">Attendee</field>
+            <field name="res_model">trainingodoo.attendee</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="menu_item_training_attende" name="Attende" parent="menu_bar_configuration" action="trainingodoo_attendee_action"/>
+
+    </data>
+</odoo>
