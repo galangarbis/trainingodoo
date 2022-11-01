@@ -91,3 +91,6 @@ class TrainingSession(models.Model):
         now = fields.Date.today()
         expired_ids = self.search([('end_date', '<', now), ('state', '=', 'open')])
         expired_ids.write({'state': 'done'})
+
+    def action_print_session(self):
+        return self.env.ref('trainingodoo.report_trainingodoo_session_action').report_action(self)

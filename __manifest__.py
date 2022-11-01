@@ -23,6 +23,8 @@
 
     # always loaded
     'data': [
+        'report/report_training_session.xml',
+        'report/report_action.xml',
         'security/security.xml',
         'security/ir.model.access.csv',
         'views/scheduler_data.xml',
