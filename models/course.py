@@ -35,3 +35,6 @@ class TrainingCourse(models.Model):
         default = dict(default or {})
         default.update(name=("%s (copy)") % (self.name or ''))
         return super(TrainingCourse, self).copy(default)
+
+    def action_print_course(self):
+        return self.env.ref('trainingodoo.report_trainingodoo_course_action').report_action(self)
